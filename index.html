@@ -202,6 +202,29 @@
 
   .pie{text-align:center;color:var(--texto-suave);font-size:13px;margin-top:6px;}
   .pie .copos{font-size:18px;letter-spacing:4px;}
+
+  /* ---------- Pantalla de inicio (toca para abrir + arranca música) ---------- */
+  #intro{
+    position:fixed;inset:0;z-index:200;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    text-align:center;cursor:pointer;padding:24px;
+    background:linear-gradient(160deg,#dcefff 0%,#cfe3ff 45%,#efe6fb 100%);
+    transition:opacity .6s ease;
+  }
+  #intro.oculto{opacity:0;}
+  #intro .intro-copo{font-size:64px;animation:flotar 3s ease-in-out infinite;}
+  #intro .intro-sub{margin-top:14px;letter-spacing:2px;text-transform:uppercase;color:var(--texto-suave);font-weight:600;font-size:14px;}
+  #intro .intro-name{
+    font-family:'Pacifico',cursive;font-size:clamp(48px,16vw,80px);color:var(--lavanda);
+    text-shadow:0 2px 0 #fff,0 6px 18px rgba(184,169,217,.45);margin:2px 0 22px;
+  }
+  #intro .intro-btn{
+    background:linear-gradient(135deg,var(--lavanda),var(--turquesa));color:#fff;border:none;
+    font-family:inherit;font-weight:700;font-size:18px;padding:14px 30px;border-radius:999px;
+    box-shadow:0 8px 22px rgba(127,200,217,.5);cursor:pointer;
+    animation:latido 1.6s ease-in-out infinite;
+  }
+  @keyframes latido{0%,100%{transform:scale(1);}50%{transform:scale(1.06);}}
 </style>
 </head>
 <body>
@@ -217,6 +240,14 @@
 <div class="acuarela"></div>
 <canvas id="nieve"></canvas>
 <canvas id="confeti"></canvas>
+
+<!-- Pantalla de inicio: el toque arranca la música y revela la invitación -->
+<div id="intro">
+  <div class="intro-copo">❄️</div>
+  <div class="intro-sub">Tienes una invitación mágica</div>
+  <div class="intro-name" id="introName">Stella</div>
+  <button class="intro-btn">Toca para abrir 👑</button>
+</div>
 
 <div class="wrap">
 
@@ -521,7 +552,22 @@ crearCopos();
 dibujarNieve();
 dibujarConfeti();
 window.addEventListener('resize', function(){ dimensionar(); crearCopos(); });
-window.addEventListener('load', function(){ setTimeout(rafagaConfeti, 500); });
+
+// Pantalla de inicio: el primer toque arranca la música (los navegadores exigen una
+// interacción del usuario para reproducir audio con sonido) y revela la invitación.
+(function(){
+  const intro = document.getElementById('intro');
+  if (!intro){ setTimeout(rafagaConfeti, 500); return; }
+  document.getElementById('introName').textContent = PARTY.nombre;
+  function abrir(){
+    intro.removeEventListener('click', abrir);
+    if (PARTY.musica){ audio.play().catch(function(){}); }
+    rafagaConfeti();
+    intro.classList.add('oculto');
+    setTimeout(function(){ intro.style.display = 'none'; }, 650);
+  }
+  intro.addEventListener('click', abrir);
+})();
 </script>
 </body>
 </html>
