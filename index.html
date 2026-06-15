@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- No aparecer en buscadores (Google, etc.): la invitación solo se ve con el link -->
+<meta name="robots" content="noindex, nofollow">
+<title>¡Estás invitada! ❄️</title>
+<!-- Vista previa al compartir en WhatsApp / redes (Open Graph). El robot de WhatsApp NO ejecuta JS, por eso van fijos aquí. -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="❄️ ¡Estás invitada a la fiesta de Stella!">
+<meta property="og:description" content="Stella cumple 4 añitos. ¡Toca para abrir la invitación mágica de hielo! 👑">
+<meta property="og:image" content="https://reiiikman.github.io/invitacion-stella-07674342/portada.jpg">
+<meta property="og:url" content="https://reiiikman.github.io/invitacion-stella-07674342/">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="❄️ ¡Estás invitada a la fiesta de Stella!">
+<meta name="twitter:description" content="Stella cumple 4 añitos. ¡Toca para abrir la invitación mágica de hielo! 👑">
+<meta name="twitter:image" content="https://reiiikman.github.io/invitacion-stella-07674342/portada.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --hielo:#a8d8ea;
+    --hielo-claro:#cce7f0;
+    --lavanda:#b8a9d9;
+    --turquesa:#7fc8d9;
+    --rosa:#f7d6e0;
+    --blanco:#ffffff;
+    --texto:#3a5a78;
+    --texto-suave:#5d7a96;
+  }
+
+  *{box-sizing:border-box;margin:0;padding:0;}
+
+  html{scroll-behavior:smooth;}
+
+  body{
+    font-family:'Quicksand',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+    color:var(--texto);
+    background:#eaf6fb;
+    overflow-x:hidden;
+    position:relative;
+    min-height:100vh;
+  }
+
+  /* ---------- Fondo acuarela ---------- */
+  .acuarela{
+    position:fixed;
+    inset:0;
+    z-index:-2;
+    background:
+      radial-gradient(45% 40% at 20% 18%, rgba(184,169,217,.55), transparent 70%),
+      radial-gradient(50% 45% at 82% 12%, rgba(127,200,217,.50), transparent 70%),
+      radial-gradient(55% 50% at 75% 80%, rgba(247,214,224,.55), transparent 72%),
+      radial-gradient(60% 55% at 15% 82%, rgba(168,216,234,.60), transparent 72%),
+      radial-gradient(80% 80% at 50% 50%, rgba(204,231,240,.45), transparent 80%),
+      linear-gradient(160deg,#eaf6fb 0%,#dcefff 45%,#f3eefb 100%);
+    filter:url(#acuarelaFiltro);
+  }
+  .acuarela::after{
+    content:"";
+    position:absolute;inset:0;
+    background:
+      radial-gradient(30% 28% at 60% 30%, rgba(255,255,255,.45), transparent 70%),
+      radial-gradient(28% 26% at 35% 60%, rgba(255,255,255,.35), transparent 70%);
+    mix-blend-mode:screen;
+  }
+
+  /* ---------- Nieve (canvas) ---------- */
+  #nieve{position:fixed;inset:0;z-index:-1;pointer-events:none;}
+  #confeti{position:fixed;inset:0;z-index:50;pointer-events:none;}
+
+  /* ---------- Layout ---------- */
+  .wrap{
+    max-width:560px;
+    margin:0 auto;
+    padding:28px 20px 120px;
+  }
+
+  .tarjeta{
+    background:rgba(255,255,255,.62);
+    backdrop-filter:blur(10px);
+    -webkit-backdrop-filter:blur(10px);
+    border:1px solid rgba(255,255,255,.7);
+    border-radius:28px;
+    padding:34px 26px;
+    margin-bottom:22px;
+    box-shadow:0 12px 40px rgba(90,130,170,.18);
+    text-align:center;
+    animation:aparecer .8s ease both;
+  }
+  @keyframes aparecer{from{opacity:0;transform:translateY(24px);}to{opacity:1;transform:translateY(0);}}
+
+  /* ---------- Hero ---------- */
+  .hero .copos-deco{font-size:30px;letter-spacing:6px;margin-bottom:8px;animation:flotar 4s ease-in-out infinite;}
+  @keyframes flotar{0%,100%{transform:translateY(0);}50%{transform:translateY(-8px);}}
+
+  /* ---------- Marco de video ---------- */
+  .video-marco{
+    position:relative;
+    width:min(74%,270px);
+    aspect-ratio:3/4;
+    margin:6px auto 18px;
+    border-radius:24px;
+    padding:7px;
+    background:linear-gradient(135deg,var(--hielo),var(--turquesa),#ffffff,var(--lavanda),var(--hielo));
+    background-size:300% 300%;
+    box-shadow:0 10px 30px rgba(127,200,217,.55);
+    animation:bordeBrillo 6s ease infinite;
+    cursor:pointer;
+  }
+  @keyframes bordeBrillo{0%{background-position:0% 50%;}50%{background-position:100% 50%;}100%{background-position:0% 50%;}}
+  .video-marco video{width:100%;height:100%;border-radius:18px;object-fit:cover;display:block;background:#dcefff;}
+  .video-marco .sonido-hint{
+    position:absolute;bottom:14px;right:14px;z-index:2;
+    background:rgba(58,90,120,.72);color:#fff;font-size:15px;
+    width:36px;height:36px;border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    -webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);pointer-events:none;
+  }
+
+  .hero .pretitulo{
+    font-size:15px;letter-spacing:3px;text-transform:uppercase;
+    color:var(--texto-suave);font-weight:600;margin-bottom:6px;
+  }
+  .hero h1{
+    font-family:'Pacifico',cursive;
+    font-size:clamp(46px,16vw,76px);
+    line-height:1.05;
+    color:var(--lavanda);
+    text-shadow:0 2px 0 #fff,0 6px 18px rgba(184,169,217,.45);
+    margin:6px 0 4px;
+  }
+  .hero .edad{
+    display:inline-block;
+    margin-top:10px;
+    font-weight:700;font-size:20px;color:var(--texto);
+    background:linear-gradient(135deg,var(--hielo),var(--turquesa));
+    color:#fff;
+    padding:6px 22px;border-radius:999px;
+    box-shadow:0 6px 16px rgba(127,200,217,.5);
+  }
+  .hero .subtitulo{margin-top:16px;color:var(--texto-suave);font-size:17px;}
+
+  /* ---------- Títulos de sección ---------- */
+  .seccion-titulo{
+    font-family:'Pacifico',cursive;
+    font-size:26px;color:var(--turquesa);margin-bottom:18px;
+  }
+
+  /* ---------- Countdown ---------- */
+  .countdown{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;}
+  .cd-box{
+    background:linear-gradient(160deg,#fff,var(--hielo-claro));
+    border-radius:18px;padding:14px 6px;min-width:72px;flex:1;
+    box-shadow:0 6px 16px rgba(90,130,170,.15);
+  }
+  .cd-num{font-size:34px;font-weight:700;color:var(--lavanda);line-height:1;}
+  .cd-lbl{font-size:12px;letter-spacing:1px;text-transform:uppercase;color:var(--texto-suave);margin-top:6px;}
+  .cd-fin{font-size:20px;color:var(--lavanda);font-weight:600;}
+
+  /* ---------- Detalles ---------- */
+  .detalle{display:flex;align-items:center;gap:14px;text-align:left;padding:12px 4px;border-bottom:1px dashed rgba(127,200,217,.4);}
+  .detalle:last-child{border-bottom:none;}
+  .detalle .ico{font-size:26px;flex-shrink:0;width:40px;text-align:center;}
+  .detalle .info b{display:block;font-size:17px;color:var(--texto);}
+  .detalle .info span{font-size:14px;color:var(--texto-suave);}
+
+  /* ---------- Botones ---------- */
+  .btn{
+    display:inline-flex;align-items:center;justify-content:center;gap:10px;
+    border:none;cursor:pointer;font-family:inherit;font-weight:700;
+    font-size:18px;padding:16px 28px;border-radius:999px;
+    text-decoration:none;transition:transform .15s ease,box-shadow .15s ease;
+    width:100%;
+  }
+  .btn:active{transform:scale(.97);}
+  .btn-rsvp{
+    background:linear-gradient(135deg,#25D366,#128C7E);
+    color:#fff;box-shadow:0 8px 22px rgba(18,140,126,.45);
+  }
+  .btn-mapa{
+    background:linear-gradient(135deg,var(--lavanda),var(--turquesa));
+    color:#fff;box-shadow:0 8px 22px rgba(127,200,217,.45);margin-top:14px;
+  }
+  .nota-rsvp{margin-top:14px;font-size:13px;color:var(--texto-suave);}
+
+  /* ---------- Música ---------- */
+  #musicaBtn{
+    position:fixed;right:18px;bottom:18px;z-index:60;
+    width:58px;height:58px;border-radius:50%;border:none;cursor:pointer;
+    background:linear-gradient(135deg,var(--lavanda),var(--turquesa));
+    color:#fff;font-size:24px;
+    box-shadow:0 8px 22px rgba(90,130,170,.4);
+    display:flex;align-items:center;justify-content:center;
+    transition:transform .15s ease;
+  }
+  #musicaBtn:active{transform:scale(.9);}
+  #musicaBtn.sonando{animation:girar 4s linear infinite;}
+  @keyframes girar{to{transform:rotate(360deg);}}
+
+  .pie{text-align:center;color:var(--texto-suave);font-size:13px;margin-top:6px;}
+  .pie .copos{font-size:18px;letter-spacing:4px;}
+</style>
+</head>
+<body>
+
+<!-- Filtro SVG para textura acuarela -->
+<svg width="0" height="0" style="position:absolute">
+  <filter id="acuarelaFiltro">
+    <feTurbulence type="fractalNoise" baseFrequency="0.012 0.014" numOctaves="3" seed="7" result="ruido"/>
+    <feDisplacementMap in="SourceGraphic" in2="ruido" scale="38" xChannelSelector="R" yChannelSelector="G"/>
+  </filter>
+</svg>
+
+<div class="acuarela"></div>
+<canvas id="nieve"></canvas>
+<canvas id="confeti"></canvas>
+
+<div class="wrap">
+
+  <!-- HERO -->
+  <section class="tarjeta hero">
+    <div class="copos-deco">❄️ 👑 ❄️</div>
+    <div class="video-marco" id="videoMarco" style="display:none">
+      <video id="videoEl" muted loop playsinline preload="metadata" autoplay></video>
+      <div class="sonido-hint" id="sonidoHint">🔇</div>
+    </div>
+    <div class="pretitulo">Estás invitada</div>
+    <h1 id="nombre">Nombre</h1>
+    <div class="edad" id="edad">Cumple 6</div>
+    <p class="subtitulo">¡Acompáñame a celebrar en un día mágico y congelado!</p>
+  </section>
+
+  <!-- COUNTDOWN -->
+  <section class="tarjeta">
+    <div class="seccion-titulo">Faltan...</div>
+    <div class="countdown" id="countdown">
+      <div class="cd-box"><div class="cd-num" id="cd-dias">--</div><div class="cd-lbl">Días</div></div>
+      <div class="cd-box"><div class="cd-num" id="cd-horas">--</div><div class="cd-lbl">Horas</div></div>
+      <div class="cd-box"><div class="cd-num" id="cd-min">--</div><div class="cd-lbl">Min</div></div>
+      <div class="cd-box"><div class="cd-num" id="cd-seg">--</div><div class="cd-lbl">Seg</div></div>
+    </div>
+  </section>
+
+  <!-- DETALLES -->
+  <section class="tarjeta">
+    <div class="seccion-titulo">¿Cuándo y dónde?</div>
+    <div class="detalle">
+      <div class="ico">📅</div>
+      <div class="info"><b id="fechaTexto">Fecha</b><span>¡No faltes!</span></div>
+    </div>
+    <div class="detalle">
+      <div class="ico">📍</div>
+      <div class="info"><b id="lugar">Lugar</b><span>Te esperamos</span></div>
+    </div>
+    <a class="btn btn-mapa" id="mapaBtn" target="_blank" rel="noopener">🗺️ Ver mapa</a>
+  </section>
+
+  <!-- RSVP -->
+  <section class="tarjeta">
+    <div class="seccion-titulo">¿Vienes a la fiesta?</div>
+    <p style="color:var(--texto-suave);margin-bottom:18px;">Confírmanos tu asistencia con un toque ❄️</p>
+    <a class="btn btn-rsvp" id="rsvpBtn">✅ Confirmar por WhatsApp</a>
+    <p class="nota-rsvp">Se abrirá WhatsApp con tu mensaje listo para enviar.</p>
+  </section>
+
+  <div class="pie">
+    <div class="copos">❄️ ⛄ ✨ ⛄ ❄️</div>
+    <p>Hecho con cariño para un día inolvidable</p>
+  </div>
+
+</div>
+
+<button id="musicaBtn" aria-label="Música">🎵</button>
+<audio id="audio" loop preload="none"></audio>
+
+<script>
+/* ====================================================================
+   CONFIGURACIÓN — edita aquí los datos de la fiesta
+   ==================================================================== */
+const PARTY = {
+  nombre: "Stella",
+  edad: 4,
+  fecha: "2026-06-20T15:00:00",            // ISO: AAAA-MM-DDThh:mm:ss (para la cuenta regresiva)
+  fechaTexto: "Sabado 20 de junio · 3:00 PM",
+  lugar: "funxpert Park Av. Balmaceda 2340, 1710308 La Serena, Coquimbo",
+  mapsUrl: "https://maps.app.goo.gl/d5gVr57HwHEuCmn67",
+  whatsapp: "15739448104",                 // número que recibe confirmaciones (formato internacional, sin + ni espacios)
+  mensajeRSVP: "¡Hola! Confirmo que asistiremos a la fiesta de Stella ❄️🎉",
+  musica: "musica.mp3",                    // archivo local junto al HTML, o una URL. Déjalo vacío "" si no hay música.
+  video: "video.mp4",                      // video en el marco (ej. "video.mp4"). Vacío "" = sin marco. Toca el marco para activar sonido.
+  imagenRSVP: ""                           // imagen que se comparte al confirmar (Web Share). Vacío "" = solo texto.
+};
+
+/* ====================================================================
+   Rellenar contenido
+   ==================================================================== */
+document.getElementById('nombre').textContent     = PARTY.nombre;
+document.getElementById('edad').textContent        = "Cumple " + PARTY.edad;
+document.getElementById('fechaTexto').textContent  = PARTY.fechaTexto;
+document.getElementById('lugar').textContent       = PARTY.lugar;
+document.title = "¡" + PARTY.nombre + " te invita! ❄️";
+
+if (PARTY.video){
+  const vEl = document.getElementById('videoEl');
+  const vMarco = document.getElementById('videoMarco');
+  const vHint = document.getElementById('sonidoHint');
+  vEl.src = PARTY.video;
+  vMarco.style.display = 'block';
+  vEl.play().catch(function(){});
+  // Tocar el marco activa/silencia el sonido del video
+  vMarco.addEventListener('click', function(){
+    vEl.muted = !vEl.muted;
+    vHint.textContent = vEl.muted ? '🔇' : '🔊';
+    if (!vEl.muted){ vEl.play().catch(function(){}); }
+  });
+}
+
+const mapaBtn = document.getElementById('mapaBtn');
+if (PARTY.mapsUrl) { mapaBtn.href = PARTY.mapsUrl; } else { mapaBtn.style.display = 'none'; }
+
+const rsvpBtn = document.getElementById('rsvpBtn');
+const waUrl = "https://wa.me/" + PARTY.whatsapp + "?text=" + encodeURIComponent(PARTY.mensajeRSVP);
+rsvpBtn.href = waUrl;
+
+// Pre-cargar la imagen a compartir (para tenerla lista al tocar, sin perder el gesto del usuario)
+let archivoRSVP = null;
+if (PARTY.imagenRSVP){
+  fetch(PARTY.imagenRSVP)
+    .then(function(r){ return r.blob(); })
+    .then(function(b){ archivoRSVP = new File([b], 'invitacion.png', { type: b.type || 'image/png' }); })
+    .catch(function(){ /* sin imagen disponible -> caerá a solo texto */ });
+}
+
+rsvpBtn.addEventListener('click', function(e){
+  e.preventDefault();
+  rafagaConfeti();
+  // Si el navegador puede compartir archivos -> menú de compartir con imagen + texto
+  if (archivoRSVP && navigator.canShare && navigator.canShare({ files:[archivoRSVP] })){
+    navigator.share({ files:[archivoRSVP], text: PARTY.mensajeRSVP })
+      .catch(function(){ window.open(waUrl, '_blank'); });
+    return;
+  }
+  // Fallback: WhatsApp con solo texto (al número configurado)
+  setTimeout(function(){ window.open(waUrl, '_blank'); }, 450);
+});
+
+/* ====================================================================
+   Cuenta regresiva
+   ==================================================================== */
+const objetivo = new Date(PARTY.fecha).getTime();
+const elDias = document.getElementById('cd-dias');
+const elHoras = document.getElementById('cd-horas');
+const elMin = document.getElementById('cd-min');
+const elSeg = document.getElementById('cd-seg');
+const cdWrap = document.getElementById('countdown');
+
+function pad(n){ return String(n).padStart(2,'0'); }
+
+function tick(){
+  const ahora = Date.now();
+  let dif = objetivo - ahora;
+  if (isNaN(objetivo)) { return; }
+  if (dif <= 0){
+    cdWrap.innerHTML = '<div class="cd-fin">🎉 ¡Hoy es la fiesta! 🎉</div>';
+    clearInterval(timer);
+    return;
+  }
+  const d = Math.floor(dif / 86400000); dif -= d*86400000;
+  const h = Math.floor(dif / 3600000);  dif -= h*3600000;
+  const m = Math.floor(dif / 60000);    dif -= m*60000;
+  const s = Math.floor(dif / 1000);
+  elDias.textContent  = d;
+  elHoras.textContent = pad(h);
+  elMin.textContent   = pad(m);
+  elSeg.textContent   = pad(s);
+}
+tick();
+const timer = setInterval(tick, 1000);
+
+/* ====================================================================
+   Música
+   ==================================================================== */
+const audio = document.getElementById('audio');
+const musicaBtn = document.getElementById('musicaBtn');
+
+function actualizarBtnMusica(){
+  if (audio.paused){
+    musicaBtn.textContent = '🎵';
+    musicaBtn.classList.remove('sonando');
+  } else {
+    musicaBtn.textContent = '🔊';
+    musicaBtn.classList.add('sonando');
+  }
+}
+
+if (PARTY.musica){
+  audio.src = PARTY.musica;
+  audio.volume = 0.6;
+
+  // Botón: alterna reproducir / pausar
+  musicaBtn.addEventListener('click', function(e){
+    e.stopPropagation();
+    if (audio.paused){ audio.play().catch(function(){}); }
+    else { audio.pause(); }
+  });
+  audio.addEventListener('play', actualizarBtnMusica);
+  audio.addEventListener('pause', actualizarBtnMusica);
+
+  // Sonar de fondo al cargar. Si el navegador bloquea el autoplay con sonido,
+  // arrancar en la primera interacción del usuario (toque, clic, tecla o scroll).
+  const eventos = ['click','touchstart','keydown','scroll'];
+  function arrancar(){
+    audio.play().catch(function(){});
+    eventos.forEach(function(ev){ window.removeEventListener(ev, arrancar); });
+  }
+  audio.play().catch(function(){
+    eventos.forEach(function(ev){ window.addEventListener(ev, arrancar, { passive:true }); });
+  });
+} else {
+  musicaBtn.style.display = 'none';
+}
+
+/* ====================================================================
+   Nieve (canvas)
+   ==================================================================== */
+const lienzoNieve = document.getElementById('nieve');
+const ctxN = lienzoNieve.getContext('2d');
+let copos = [];
+
+function dimensionar(){
+  lienzoNieve.width = window.innerWidth;
+  lienzoNieve.height = window.innerHeight;
+  confeti.width = window.innerWidth;
+  confeti.height = window.innerHeight;
+}
+
+function crearCopos(){
+  const cantidad = Math.min(90, Math.floor(window.innerWidth / 9));
+  copos = [];
+  for (let i=0;i<cantidad;i++){
+    copos.push({
+      x: Math.random()*lienzoNieve.width,
+      y: Math.random()*lienzoNieve.height,
+      r: Math.random()*3 + 1.5,
+      vel: Math.random()*0.8 + 0.4,
+      bal: Math.random()*Math.PI*2,
+      balVel: Math.random()*0.02 + 0.005
+    });
+  }
+}
+
+function dibujarNieve(){
+  ctxN.clearRect(0,0,lienzoNieve.width,lienzoNieve.height);
+  ctxN.fillStyle = 'rgba(255,255,255,0.85)';
+  for (const c of copos){
+    ctxN.globalAlpha = 0.6 + Math.sin(c.bal)*0.3;
+    ctxN.beginPath();
+    ctxN.arc(c.x, c.y, c.r, 0, Math.PI*2);
+    ctxN.fill();
+    c.y += c.vel;
+    c.bal += c.balVel;
+    c.x += Math.sin(c.bal)*0.6;
+    if (c.y > lienzoNieve.height + 5){ c.y = -5; c.x = Math.random()*lienzoNieve.width; }
+  }
+  ctxN.globalAlpha = 1;
+  requestAnimationFrame(dibujarNieve);
+}
+
+/* ====================================================================
+   Confeti / copos en ráfaga (canvas)
+   ==================================================================== */
+const confeti = document.getElementById('confeti');
+const ctxC = confeti.getContext('2d');
+let particulas = [];
+const colores = ['#a8d8ea','#b8a9d9','#7fc8d9','#f7d6e0','#ffffff','#cce7f0'];
+
+function rafagaConfeti(){
+  const cx = confeti.width/2;
+  for (let i=0;i<120;i++){
+    particulas.push({
+      x: cx + (Math.random()-0.5)*80,
+      y: confeti.height*0.35,
+      vx: (Math.random()-0.5)*12,
+      vy: Math.random()*-14 - 4,
+      g: 0.35,
+      tam: Math.random()*8 + 4,
+      color: colores[Math.floor(Math.random()*colores.length)],
+      giro: Math.random()*Math.PI,
+      giroVel: (Math.random()-0.5)*0.3,
+      vida: 1
+    });
+  }
+}
+
+function dibujarConfeti(){
+  ctxC.clearRect(0,0,confeti.width,confeti.height);
+  for (let i=particulas.length-1;i>=0;i--){
+    const p = particulas[i];
+    p.x += p.vx; p.y += p.vy; p.vy += p.g; p.vx *= 0.99;
+    p.giro += p.giroVel; p.vida -= 0.008;
+    ctxC.save();
+    ctxC.globalAlpha = Math.max(0, p.vida);
+    ctxC.translate(p.x, p.y);
+    ctxC.rotate(p.giro);
+    ctxC.fillStyle = p.color;
+    ctxC.fillRect(-p.tam/2, -p.tam/2, p.tam, p.tam*0.6);
+    ctxC.restore();
+    if (p.vida <= 0 || p.y > confeti.height + 20){ particulas.splice(i,1); }
+  }
+  requestAnimationFrame(dibujarConfeti);
+}
+
+/* ====================================================================
+   Init
+   ==================================================================== */
+dimensionar();
+crearCopos();
+dibujarNieve();
+dibujarConfeti();
+window.addEventListener('resize', function(){ dimensionar(); crearCopos(); });
+window.addEventListener('load', function(){ setTimeout(rafagaConfeti, 500); });
+</script>
+</body>
+</html>
